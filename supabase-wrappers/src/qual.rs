@@ -345,7 +345,7 @@ pub(crate) unsafe fn extract_from_scalar_array_op_expr(
                 }
 
                 if let Some(stm) = pgrx::nodes::node_to_string(expr as _) {
-                    report_warning(&format!("only support const scalar array in qual: {stm}",));
+                    report_info(&format!("only support const scalar array in qual: {stm}",));
                 }
             }
 

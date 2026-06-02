@@ -120,11 +120,11 @@ pub(super) unsafe fn options_to_hashmap(
                 let option = *option as *mut pg_sys::DefElem;
                 let name = unsafe { CStr::from_ptr((*option).defname) };
                 let value = unsafe { CStr::from_ptr(pg_sys::defGetString(option)) };
-                let name = name.to_str().map_err(|_| {
-                    OptionsError::OptionNameIsInvalidUtf8(
-                        String::from_utf8_lossy(name.to_bytes()).to_string(),
-                    )
-                })?;
+                let name = name
+                    .to_str()
+                    .map_err(|_| OptionsError::OptionValueIsInvalidUtf8 {
+                        option_name: String::from_utf8_lossy(value.to_bytes()).to_string(),
+                    })?;
                 // SECURITY: Don't include the actual value in error messages
                 // to prevent leaking credentials for sensitive options
                 let value = value

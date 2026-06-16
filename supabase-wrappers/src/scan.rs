@@ -570,7 +570,7 @@ pub(super) extern "C-unwind" fn end_foreign_scan<E: Into<ErrorReport>, W: Foreig
         // drop the state by ourselves
         let mut state = PgBox::<FdwState<E, W>>::from_pg(fdw_state);
         let result = state.end_scan();
-        drop_fdw_state(state.as_ptr());
+        // drop_fdw_state(state.as_ptr());
         (*node).fdw_state = ptr::null::<FdwState<E, W>>() as _;
 
         result.report_unwrap();
